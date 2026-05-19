@@ -1,0 +1,108 @@
+:root {
+  /* ═══ Shared Structural & Timing Tokens ═══ */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-56: 56px;
+  --space-72: 72px;
+  --space-96: 96px;
+  --space-120: 120px;
+  
+  --section-spacer: clamp(80px, 12vw, 140px);
+  --container-max-width: 1440px;
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 40px;
+  --radius-full: 9999px;
+  
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-cinematic: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ═══ Warm Luxury Light Palette (Ivory/Alabaster) ═══ */
+  --bg-primary: #fcfbf9;
+  --bg-secondary: #f4f3f8;
+  --bg-tertiary: #eae9f0;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  
+  --text-primary: #110e1a;
+  --text-secondary: rgba(17, 14, 26, 0.65);
+  --text-tertiary: rgba(17, 14, 26, 0.4);
+  
+  --border-primary: rgba(17, 14, 26, 0.08);
+  --border-secondary: rgba(17, 14, 26, 0.04);
+  --border-glow: rgba(123, 63, 242, 0.3);
+  
+  /* ═══ Brand Purple Accents (Light Mode) ═══ */
+  --accent-base: #6a2ae3;
+  --accent-secondary: #8d57f2;
+  --accent-tertiary: #bba0ff;
+  --accent-glow: rgba(123, 63, 242, 0.06);
+  --accent-glow-strong: rgba(123, 63, 242, 0.2);
+  
+  /* ═══ Surface & Glass Parameters (Light Mode) ═══ */
+  --surface-glass: rgba(255, 255, 255, 0.45);
+  --surface-glass-hover: rgba(255, 255, 255, 0.75);
+  --surface-elevated: rgba(255, 255, 255, 0.85);
+  
+  /* ═══ Cinematic Depth Shadows (Light Mode) ═══ */
+  --shadow-cinematic: 
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    0 20px 48px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 
+    0 0 40px rgba(123, 63, 242, 0.04),
+    0 16px 40px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 
+    0 0 0 1px rgba(123, 63, 242, 0.2),
+    0 8px 32px rgba(123, 63, 242, 0.06),
+    0 24px 64px rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  /* ═══ Deep Dark Luxury Palette (Obsidian) ═══ */
+  --bg-primary: #050505;
+  --bg-secondary: #0a0a0f;
+  --bg-tertiary: #0f0f16;
+  --bg-card: rgba(255, 255, 255, 0.025);
+  
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.55);
+  --text-tertiary: rgba(255, 255, 255, 0.3);
+  
+  --border-primary: rgba(255, 255, 255, 0.08);
+  --border-secondary: rgba(255, 255, 255, 0.04);
+  --border-glow: rgba(123, 63, 242, 0.4);
+  
+  /* ═══ Brand Purple Accents (Dark Mode) ═══ */
+  --accent-base: #7b3ff2;
+  --accent-secondary: #b084ff;
+  --accent-tertiary: #d4b8ff;
+  --accent-glow: rgba(123, 63, 242, 0.15);
+  --accent-glow-strong: rgba(123, 63, 242, 0.4);
+  
+  /* ═══ Surface & Glass Parameters (Dark Mode) ═══ */
+  --surface-glass: rgba(255, 255, 255, 0.03);
+  --surface-glass-hover: rgba(255, 255, 255, 0.06);
+  --surface-elevated: rgba(255, 255, 255, 0.04);
+  
+  /* ═══ Cinematic Depth Shadows (Dark Mode) ═══ */
+  --shadow-cinematic: 
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 24px 80px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 
+    0 0 40px rgba(123, 63, 242, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 
+    0 0 0 1px rgba(123, 63, 242, 0.3),
+    0 8px 40px rgba(123, 63, 242, 0.1),
+    0 30px 80px rgba(0, 0, 0, 0.5);
+}

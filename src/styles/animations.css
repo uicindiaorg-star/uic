@@ -1,0 +1,119 @@
+/* ═══ Cinematic Micro-Animations ═══ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes orbPulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes nfcRipple {
+  0% { transform: scale(0.6); opacity: 0.6; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.float-animation { animation: float 6s ease-in-out infinite; }
+.float-slow-animation { animation: floatSlow 8s ease-in-out infinite; }
+.orb-pulse { animation: orbPulse 10s ease-in-out infinite; }
+
+/* ═══ Grain Overlay ═══ */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* ═══ Glassmorphic Cards ═══ */
+.glass-card {
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-cinematic);
+  transition: 
+    transform var(--transition-medium),
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    background var(--transition-medium);
+}
+
+.glass-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-glow);
+  background: var(--surface-glass-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ═══ Ambient Glow Orbs ═══ */
+.mesh-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.mesh-orb-primary {
+  background: radial-gradient(circle, rgba(123, 63, 242, 0.25) 0%, transparent 70%);
+}
+
+.mesh-orb-secondary {
+  background: radial-gradient(circle, rgba(176, 132, 255, 0.15) 0%, transparent 70%);
+}
+
+/* ═══ Smooth Scroll Reveal ═══ */
+.section-wrapper {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.section-wrapper.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Force the first section (hero) visible immediately */
+#hero.section-wrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ Reduced Motion ═══ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .section-wrapper {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
