@@ -8,7 +8,7 @@ import { Works } from "@/features/works/Works"
 import { Testimonials } from "@/features/testimonials/Testimonials"
 import { Contact } from "@/features/contact/Contact"
 import { Footer } from "@/features/footer/Footer"
-import { animate } from "animejs"
+import { animate, stagger, set } from "animejs"
 import "@/styles/globals.css"
 import "./App.css"
 
