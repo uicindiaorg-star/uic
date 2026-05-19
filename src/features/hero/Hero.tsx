@@ -29,11 +29,11 @@ export const Hero = () => {
       className="h-screen w-full relative flex items-end pb-[10vh] md:pb-[12vh] overflow-hidden select-none bg-transparent"
     >
       {/* ═══ PREMIUM CINEMATIC EDITORIAL HERO BACKGROUND ═══ */}
-      <div className="absolute inset-0 bg-[#EFEFEF] overflow-hidden pointer-events-none z-[1]">
+      <div className="absolute inset-0 bg-[var(--bg-primary)] transition-colors duration-500 overflow-hidden pointer-events-none z-[1]">
         
         {/* Layer 05 — Ambient Light & Vignette */}
-        <div className="absolute inset-0 bg-radial from-white/50 via-transparent to-transparent pointer-events-none z-10" />
-        <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_120px_rgba(0,0,0,0.03)]" />
+        <div className="absolute inset-0 bg-radial from-[var(--accent-glow-strong)]/20 via-transparent to-transparent pointer-events-none z-10" />
+        <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_120px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_0_120px_rgba(0,0,0,0.6)]" />
 
         {/* SVG Filter Scaffold for Real-time Liquid Refraction & Cinematic Grain */}
         <svg className="absolute w-0 h-0 pointer-events-none select-none">
@@ -53,18 +53,18 @@ export const Hero = () => {
           className="absolute inset-0 opacity-[0.95] z-0"
           style={{ filter: "url(#flutedGlassRefraction)" }}
         >
-          {/* Extremely slow organic light warm forms */}
-          <div className="absolute top-[-25%] left-[-15%] w-[85%] h-[85%] rounded-full bg-white blur-[100px] opacity-[0.7] animate-[fluid-one_28s_infinite_ease-in-out]" />
-          <div className="absolute bottom-[-25%] right-[-10%] w-[90%] h-[90%] rounded-full bg-[#E5E5E5] blur-[120px] opacity-[0.75] animate-[fluid-two_35s_infinite_ease-in-out]" />
-          <div className="absolute top-[20%] right-[10%] w-[70%] h-[70%] rounded-full bg-[#EAEAEA] blur-[110px] opacity-[0.6] animate-[fluid-one_24s_infinite_ease-in-out_reverse]" />
+          {/* Extremely slow organic light warm forms - soft low opacities to prevent white washing */}
+          <div className="absolute top-[-25%] left-[-15%] w-[85%] h-[85%] rounded-full bg-white/20 dark:bg-white/[0.02] blur-[100px] opacity-[0.25] animate-[fluid-one_28s_infinite_ease-in-out]" />
+          <div className="absolute bottom-[-25%] right-[-10%] w-[90%] h-[90%] rounded-full bg-white/15 dark:bg-white/[0.015] blur-[120px] opacity-[0.35] animate-[fluid-two_35s_infinite_ease-in-out]" />
+          <div className="absolute top-[20%] right-[10%] w-[70%] h-[70%] rounded-full bg-white/10 dark:bg-white/[0.01] blur-[110px] opacity-[0.2] animate-[fluid-one_24s_infinite_ease-in-out_reverse]" />
         </div>
 
         {/* Layer 02 Overlay — 12 Column vertical Fluted Glass highlights with backdrop blurs */}
-        <div className="absolute inset-0 grid grid-cols-12 gap-0 z-10 pointer-events-none opacity-[0.18]">
+        <div className="absolute inset-0 grid grid-cols-12 gap-0 z-10 pointer-events-none opacity-[0.25]">
           {[...Array(12)].map((_, i) => (
             <div 
               key={i} 
-              className="h-full border-l border-neutral-900/[0.04] bg-white/[0.01]" 
+              className="h-full border-l border-[var(--border-primary)]/40 bg-transparent" 
             />
           ))}
         </div>
@@ -118,13 +118,13 @@ export const Hero = () => {
 
           {/* Small Label */}
           <div className="hero-editorial-stagger opacity-0 flex items-center gap-2">
-            <span className="text-[11px] font-black uppercase tracking-[0.25em] text-neutral-500 font-mono">
+            <span className="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--text-secondary)] font-mono">
               Unique Identity Creation
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="hero-editorial-stagger opacity-0 text-[36px] sm:text-[48px] md:text-[62px] font-medium text-neutral-900 tracking-[-0.03em] leading-[1.06] text-left">
+          <h1 className="hero-editorial-stagger opacity-0 text-[36px] sm:text-[48px] md:text-[62px] font-medium text-[var(--text-primary)] tracking-[-0.03em] leading-[1.06] text-left">
             Create memorable digital identities<br />
             and premium NFC experiences<br />
             that make brands impossible to ignore.

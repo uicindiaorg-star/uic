@@ -118,7 +118,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
               aria-label="Toggle theme"
             >
               {theme === "dark" ? (
-                <Sun className="h-4 w-4 text-[#F26522] animate-in spin-in-12 duration-500" />
+                <Sun className="h-4 w-4 text-[var(--accent-base)] animate-in spin-in-12 duration-500" />
               ) : (
                 <Moon className="h-4 w-4 text-neutral-500 animate-in spin-in-12 duration-500" />
               )}
@@ -127,7 +127,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
             {/* Premium CTA Button */}
             <Button
               size="sm"
-              className="hidden sm:inline-flex rounded-full px-5 py-2.5 text-[10px] font-extrabold uppercase tracking-widest bg-neutral-900 hover:bg-[#F26522] text-white border-0 transition-all duration-300 group focus:outline-none flex items-center gap-1.5"
+              className="hidden sm:inline-flex rounded-full px-5 py-2.5 text-[10px] font-extrabold uppercase tracking-widest bg-neutral-900 hover:bg-[var(--accent-base)] text-white border-0 transition-all duration-300 group focus:outline-none flex items-center gap-1.5"
               onClick={() => handleLinkClick("#contact")}
             >
               <span>Start Project</span>
