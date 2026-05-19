@@ -4,6 +4,13 @@
 @import "./responsive.css";
 
 /* ═══ Global Dark Luxury Resets ═══ */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -11,9 +18,6 @@ html {
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
 }
 
 ::selection {

@@ -247,10 +247,8 @@ export const Hero = () => {
           {/* ═══ FACE REVEAL: Portrait with circular mask & parallax ═══ */}
           <div
             ref={maskRef}
-            className="absolute z-20"
+            className="absolute z-20 w-[260px] h-[260px] sm:w-[300px] sm:h-[300px]"
             style={{
-              width: "300px",
-              height: "300px",
               top: "50%",
               left: "50%",
               transform: `translate(-50%, -50%) translateY(${-parallaxPortrait}px) scale(${portraitScale})`,
@@ -304,7 +302,7 @@ export const Hero = () => {
           {/* Layer 1: Floating website preview card — parallax offset */}
           <div
             ref={previewRef}
-            className="absolute w-[240px] h-[150px] rounded-2xl bg-black/60 border border-[var(--border-primary)] shadow-premium p-4 flex flex-col justify-between text-left transition-all pointer-events-none z-10"
+            className="hidden sm:flex absolute w-[240px] h-[150px] rounded-2xl bg-black/60 border border-[var(--border-primary)] shadow-premium p-4 flex-col justify-between text-left transition-all pointer-events-none z-10"
             style={{
               top: "2%",
               left: "0%",
@@ -336,7 +334,7 @@ export const Hero = () => {
           {/* Layer 2: Interactive Titanium NFC card mockup — deeper parallax */}
           <div
             ref={cardRef}
-            className="absolute w-[250px] aspect-[1.586/1] rounded-[20px] bg-gradient-to-br from-[#1b1233] to-[#07050d] border border-white/10 shadow-premium p-5 flex flex-col justify-between text-left transition-all cursor-pointer z-10"
+            className="hidden sm:flex absolute w-[250px] aspect-[1.586/1] rounded-[20px] bg-gradient-to-br from-[#1b1233] to-[#07050d] border border-white/10 shadow-premium p-5 flex-col justify-between text-left transition-all cursor-pointer z-10"
             style={{
               bottom: "5%",
               right: "0%",

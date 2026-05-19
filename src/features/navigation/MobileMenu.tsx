@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Sun, Moon, X } from "lucide-react"
 import { navLinks } from "./nav.data"
 import { siteConfig } from "@/content/site"
 import { animate, stagger } from "animejs"
@@ -7,9 +7,11 @@ import { animate, stagger } from "animejs"
 interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
+  theme: "light" | "dark"
+  onToggleTheme: () => void
 }
 
-export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+export const MobileMenu = ({ isOpen, onClose, theme, onToggleTheme }: MobileMenuProps) => {
 
   useEffect(() => {
     if (isOpen) {
@@ -55,12 +57,47 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     <div className="fixed inset-0 z-[60] md:hidden">
       {/* Backdrop blur overlay */}
       <div
-        className="absolute inset-0 bg-[var(--bg-primary)]/95 backdrop-blur-xl"
+        className="absolute inset-0 bg-[var(--bg-primary)]/97 backdrop-blur-2xl"
         onClick={onClose}
       />
 
       {/* Menu content */}
-      <div className="relative z-10 flex flex-col h-full px-7 pt-28 pb-10">
+      <div className="relative z-10 flex flex-col h-full px-6 pt-8 pb-10">
+        
+        {/* Integrated Mobile Header Top Bar (matching capsule alignment but full width) */}
+        <div className="flex justify-between items-center mb-10 pb-4 border-b border-[var(--border-secondary)]">
+          {/* Logo brand */}
+          <button
+            onClick={() => handleLinkClick("#hero")}
+            className="font-bold text-sm tracking-widest text-[var(--text-primary)] hover:opacity-75 focus:outline-none uppercase"
+          >
+            {siteConfig.name}.STUDIO
+          </button>
+
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              onClick={onToggleTheme}
+              className="p-2 rounded-full border border-[var(--border-primary)] text-[var(--text-primary)] transition-all bg-[var(--surface-glass)] focus:outline-none flex items-center justify-center"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4 text-[var(--accent-secondary)]" />
+              ) : (
+                <Moon className="h-4 w-4 text-[var(--accent-base)]" />
+              )}
+            </button>
+
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="w-9 h-9 rounded-full border border-[var(--border-primary)] bg-[var(--surface-glass)] flex items-center justify-center text-[var(--text-primary)] hover:border-[var(--text-secondary)] transition-all focus:outline-none"
+              aria-label="Close menu"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
 
         {/* Navigation links */}
         <nav className="flex flex-col gap-1 flex-1" aria-label="Mobile Navigation">

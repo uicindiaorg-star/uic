@@ -61,16 +61,16 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
   return (
     <>
       <header
-        className={`fixed top-6 left-0 right-0 transition-all duration-500 max-w-[1440px] mx-auto px-6 md:px-12 pointer-events-none ${
-          isMobileMenuOpen ? "z-[70] translate-y-0 opacity-100" : "z-50"
+        className={`fixed top-4 md:top-6 left-0 right-0 z-50 transition-all duration-500 max-w-[1440px] mx-auto px-4 md:px-12 pointer-events-none ${
+          isMobileMenuOpen ? "opacity-0 -translate-y-24 pointer-events-none" : ""
         } ${
           !isMobileMenuOpen && !isVisible ? "-translate-y-24 opacity-0" : "translate-y-0 opacity-100"
         }`}
       >
         {/* Floating Capsule design */}
         <div
-          className={`mx-auto max-w-[920px] rounded-full px-6 py-3.5 flex justify-between items-center transition-all duration-300 pointer-events-auto ${
-            isScrolled || isMobileMenuOpen
+          className={`mx-auto max-w-[1150px] rounded-full px-4 md:px-8 py-2.5 md:py-3.5 flex justify-between items-center transition-all duration-300 pointer-events-auto ${
+            isScrolled
               ? "navbar-scrolled"
               : "bg-transparent border border-transparent shadow-none"
           }`}
@@ -84,7 +84,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
           </button>
 
           {/* Links menu (Center) */}
-          <nav className="hidden md:flex items-center gap-6" aria-label="Main Navigation">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-8" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <button
                 key={link.href}
@@ -149,6 +149,8 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
+        theme={theme}
+        onToggleTheme={onToggleTheme}
       />
     </>
   )
