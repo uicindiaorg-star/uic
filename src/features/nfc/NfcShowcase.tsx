@@ -67,13 +67,13 @@ export const NfcShowcase = () => {
         setGenerationStep(steps[stepIdx])
       } else {
         clearInterval(interval)
-        
+
         // ═══ CANVAS CARD IMAGE GENERATION ═══
         const canvas = document.createElement("canvas");
         canvas.width = 1015;
         canvas.height = 640;
         const ctx = canvas.getContext("2d");
-        
+
         if (!ctx) {
           setIsGenerating(false);
           return;
@@ -381,15 +381,34 @@ export const NfcShowcase = () => {
       {/* Dynamic background light flares */}
       <div className="absolute top-[25%] left-[-15%] w-[450px] h-[450px] bg-radial from-[rgba(168,85,247,0.02)] to-transparent pointer-events-none" />
 
-      <Container className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-center">
+      <Container className="flex flex-col gap-12">
+        {/* Full-Width Section Header */}
+        <div className="flex flex-col items-center text-center gap-4 max-w-3xl mx-auto mb-4">
+          <Typography variant="label">NFC Customizer</Typography>
+          <Typography variant="headline" as="h2">
+            Experience It Live
+          </Typography>
+          <Typography variant="subhead">
+            Configure your aerospace composite credentials. Laser-etched, weighted metallic components integrated with dynamic profile links.
+          </Typography>
+        </div>
 
-        {/* Left Column: High-Fidelity 3D Metal Card Customizer */}
-        <div className="lg:col-span-6 flex flex-col justify-center items-center gap-8 relative">
+        {/* Customizer Workspace Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start">
+
+          {/* Left Column: High-Fidelity 3D Metal Card Customizer */}
+          <div className="lg:col-span-6 flex flex-col justify-center items-center gap-8 relative">
 
           {/* Circular ripple rings from tapping card */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
             <div className="nfc-ripple-ring absolute w-[160px] h-[160px] rounded-full border-2 border-[var(--accent-base)] opacity-0" />
             <div className="nfc-ripple-ring absolute w-[160px] h-[160px] rounded-full border-2 border-[var(--accent-base)] opacity-0" />
+          </div>
+
+          {/* Experience Interaction Title Indicator */}
+          <div className="flex items-center gap-2 px-4.5 py-2 rounded-full border border-[var(--accent-base)]/25 bg-[var(--accent-glow)] text-[var(--accent-base)] animate-pulse z-10">
+            <Radio className="w-3.5 h-3.5 text-[var(--accent-base)]" />
+            <span className="text-[9px] font-bold uppercase tracking-widest">Tap Card to Experience NFC Signal</span>
           </div>
 
           {/* Perspective bounds */}
@@ -399,7 +418,7 @@ export const NfcShowcase = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               onClick={handleCardTap}
-               className="relative aspect-[1.586/1] rounded-[28px] p-8 md:p-9 flex flex-col justify-between cursor-pointer transition-all active:scale-98 relative overflow-hidden select-none"
+              className="relative aspect-[1.586/1] rounded-[28px] p-8 md:p-9 flex flex-col justify-between cursor-pointer transition-all active:scale-98 relative overflow-hidden select-none"
               style={{
                 background: matStyles.bg,
                 color: matStyles.color,
@@ -488,13 +507,6 @@ export const NfcShowcase = () => {
 
         {/* Right Column: Dynamic Form Customizer details */}
         <div className="lg:col-span-6 flex flex-col items-start gap-6 text-left">
-          <Typography variant="label">Digital Credentials</Typography>
-          <Typography variant="headline" as="h2">
-            NFC Showcase
-          </Typography>
-          <Typography variant="subhead">
-            Configure your aerospace composite credentials. Laser-etched, weighted metallic components integrated with dynamic profile links.
-          </Typography>
 
           {/* Engraving Form Customizer */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mt-2">
@@ -761,6 +773,8 @@ export const NfcShowcase = () => {
           >
             {isGenerating ? generationStep : "Get Your NFC Card"}
           </Button>
+        </div>
+
         </div>
 
       </Container>
