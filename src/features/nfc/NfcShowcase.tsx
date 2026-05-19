@@ -3,12 +3,12 @@ import { nfcContent } from "@/content/nfc"
 import { Typography, Section, Container } from "@/components/ui"
 import { Button } from "@/components/ui/button"
 import { animate } from "animejs"
-import { CreditCard, Check, Radio, Cpu, Palette, Paintbrush, ChevronDown } from "lucide-react"
+import { CreditCard, Check, Radio, Cpu, Palette, Paintbrush, ChevronDown, Upload, Trash2 } from "lucide-react"
 
 export const NfcShowcase = () => {
   const [selectedMat, setSelectedMat] = useState(nfcContent.materials[0])
-  const [userName, setUserName] = useState("ALEXANDER MERCER")
-  const [userTitle, setUserTitle] = useState("CHIEF DESIGN DIRECTOR")
+  const [userName, setUserName] = useState("Micheal Jackson")
+  const [userTitle, setUserTitle] = useState("Singer")
   const [isTapped, setIsTapped] = useState(false)
   const [expandedId, setExpandedId] = useState<number | null>(null)
 
@@ -18,6 +18,242 @@ export const NfcShowcase = () => {
   const [gradientDir, setGradientDir] = useState("135deg")
   const [finishType, setFinishType] = useState<"matte" | "glossy" | "brushed">("glossy")
   const [showCustomPanel, setShowCustomPanel] = useState(false)
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Limit file size to 3MB
+    if (file.size > 3 * 1024 * 1024) {
+      alert("Artwork file size is too large (maximum 3MB).")
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setUploadedImage(reader.result as string)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleRemoveImage = () => {
+    setUploadedImage(null)
+  }
+
+  // Download Build spec state
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [generationStep, setGenerationStep] = useState("")
+
+  const handleDownload = () => {
+    if (isGenerating) return
+    setIsGenerating(true)
+
+    const steps = [
+      "Initializing Laser Engraver Setup...",
+      `Configuring Core Material: ${selectedMat.name}...`,
+      "Mapping Dynamic Digital vCard Profile...",
+      "Encoding Contact Verification Key...",
+      "Compiling 3D Model Coordinates...",
+      "Generating NFC Card Preview Image..."
+    ]
+
+    let stepIdx = 0
+    setGenerationStep(steps[0])
+
+    const interval = setInterval(() => {
+      stepIdx++
+      if (stepIdx < steps.length) {
+        setGenerationStep(steps[stepIdx])
+      } else {
+        clearInterval(interval)
+        
+        // ═══ CANVAS CARD IMAGE GENERATION ═══
+        const canvas = document.createElement("canvas");
+        canvas.width = 1015;
+        canvas.height = 640;
+        const ctx = canvas.getContext("2d");
+        
+        if (!ctx) {
+          setIsGenerating(false);
+          return;
+        }
+
+        const drawRoundedRect = (x: number, y: number, w: number, h: number, r: number) => {
+          ctx.beginPath();
+          ctx.moveTo(x + r, y);
+          ctx.arcTo(x + w, y, x + w, y + h, r);
+          ctx.arcTo(x + w, y + h, x, y + h, r);
+          ctx.arcTo(x, y + h, x, y, r);
+          ctx.arcTo(x, y, x + w, y, r);
+          ctx.closePath();
+        };
+
+        // Background Gradient
+        let gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        if (selectedMat.id === "black") {
+          gradient.addColorStop(0, "#121318");
+          gradient.addColorStop(1, "#1e2029");
+        } else if (selectedMat.id === "gold") {
+          gradient.addColorStop(0, "#cf9e53");
+          gradient.addColorStop(0.5, "#ecd099");
+          gradient.addColorStop(1, "#c49144");
+        } else if (selectedMat.id === "silver") {
+          gradient.addColorStop(0, "#e5e4e7");
+          gradient.addColorStop(1, "#f4f3f6");
+        } else {
+          gradient.addColorStop(0, customPrimary);
+          gradient.addColorStop(1, customSecondary);
+        }
+
+        drawRoundedRect(0, 0, canvas.width, canvas.height, 48);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        const drawDetailsAndDownload = () => {
+          // Brushed texture overlay
+          ctx.globalAlpha = 1.0;
+          const opacity = selectedMat.id === "gold" ? 0.15 : selectedMat.id === "silver" ? 0.04 : 0.08;
+          ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+          ctx.lineWidth = 1.2;
+          for (let i = 0; i < canvas.width; i += 4) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, canvas.height);
+            ctx.stroke();
+          }
+
+          // Inset border
+          ctx.strokeStyle = selectedMat.id === "gold" ? "rgba(43, 30, 6, 0.25)" : "rgba(255, 255, 255, 0.15)";
+          ctx.lineWidth = 2.5;
+          drawRoundedRect(16, 16, canvas.width - 32, canvas.height - 32, 38);
+          ctx.stroke();
+
+          // Card Top Row Logo
+          const cardTextCol = selectedMat.id === "gold" ? "#2b1e06" : selectedMat.id === "silver" ? "#1c1c1f" : "#ffffff";
+          ctx.fillStyle = cardTextCol;
+          ctx.globalAlpha = 0.85;
+
+          // Logo mark
+          ctx.beginPath();
+          ctx.arc(70, 70, 10, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.font = "bold 22px Courier New, monospace";
+          ctx.fillText("UIC CARD", 95, 78);
+
+          // NFC Wave Active icon
+          ctx.font = "bold 14px Arial, sans-serif";
+          ctx.fillText("NFC ACTIVE", canvas.width - 180, 78);
+
+          // Microchip component
+          const chipX = 70;
+          const chipY = 200;
+          const chipW = 120;
+          const chipH = 90;
+
+          const chipGrad = ctx.createLinearGradient(chipX, chipY, chipX + chipW, chipY + chipH);
+          if (selectedMat.id === "gold") {
+            chipGrad.addColorStop(0, "#f3e5b3");
+            chipGrad.addColorStop(0.5, "#d4af37");
+            chipGrad.addColorStop(1, "#aa8c2c");
+          } else {
+            chipGrad.addColorStop(0, "#f5f5f5");
+            chipGrad.addColorStop(0.5, "#d0d0d0");
+            chipGrad.addColorStop(1, "#a0a0a0");
+          }
+
+          ctx.globalAlpha = 1.0;
+          drawRoundedRect(chipX, chipY, chipW, chipH, 14);
+          ctx.fillStyle = chipGrad;
+          ctx.fill();
+          ctx.strokeStyle = "rgba(0,0,0,0.18)";
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Gold/Silver chip wire patterns
+          ctx.strokeStyle = "rgba(0,0,0,0.22)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(chipX + chipW / 2, chipY);
+          ctx.lineTo(chipX + chipW / 2, chipY + chipH);
+          ctx.moveTo(chipX, chipY + chipH / 2);
+          ctx.lineTo(chipX + chipW, chipY + chipH / 2);
+          ctx.stroke();
+
+          // Card Owner Name and Title (Engraved text)
+          ctx.fillStyle = cardTextCol;
+          ctx.shadowColor = selectedMat.id === "gold" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)";
+          ctx.shadowBlur = 1.5;
+          ctx.shadowOffsetX = 1;
+          ctx.shadowOffsetY = 1.5;
+
+          // Draw Owner Name
+          ctx.font = "bold 34px 'Courier New', Courier, monospace";
+          ctx.fillText(userName.toUpperCase(), 70, 510);
+
+          // Draw Owner Title
+          ctx.shadowBlur = 0;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+          ctx.fillStyle = selectedMat.id === "gold" ? "rgba(43, 30, 6, 0.65)" : "rgba(255, 255, 255, 0.55)";
+          ctx.font = "bold 15px Arial, sans-serif";
+          ctx.fillText(userTitle.toUpperCase(), 70, 550);
+
+          // Download Canvas Image as PNG
+          const dataUrl = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.download = `${userName.toLowerCase().replace(/\s+/g, '_')}_nfc_card.png`;
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          // Reset generation state
+          setTimeout(() => {
+            setIsGenerating(false)
+            setGenerationStep("")
+          }, 1200)
+        };
+
+        // Draw Artwork or trigger direct compilation
+        if (selectedMat.id === "custom" && uploadedImage) {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => {
+            ctx.save();
+            drawRoundedRect(0, 0, canvas.width, canvas.height, 48);
+            ctx.clip();
+            ctx.globalAlpha = 0.75;
+
+            // Cover fill
+            const imgRatio = img.width / img.height;
+            const canvasRatio = canvas.width / canvas.height;
+            let drawW = canvas.width;
+            let drawH = canvas.height;
+            let drawX = 0;
+            let drawY = 0;
+
+            if (imgRatio > canvasRatio) {
+              drawW = canvas.height * imgRatio;
+              drawX = (canvas.width - drawW) / 2;
+            } else {
+              drawH = canvas.width / imgRatio;
+              drawY = (canvas.height - drawH) / 2;
+            }
+
+            ctx.drawImage(img, drawX, drawY, drawW, drawH);
+            ctx.restore();
+
+            drawDetailsAndDownload();
+          };
+          img.src = uploadedImage;
+        } else {
+          drawDetailsAndDownload();
+        }
+      }
+    }, 850)
+  }
 
   const cardMockupRef = useRef<HTMLDivElement>(null)
 
@@ -163,7 +399,7 @@ export const NfcShowcase = () => {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               onClick={handleCardTap}
-              className="relative aspect-[1.586/1] rounded-[28px] p-8 md:p-9 flex flex-col justify-between cursor-pointer transition-all active:scale-98 relative overflow-hidden select-none"
+               className="relative aspect-[1.586/1] rounded-[28px] p-8 md:p-9 flex flex-col justify-between cursor-pointer transition-all active:scale-98 relative overflow-hidden select-none"
               style={{
                 background: matStyles.bg,
                 color: matStyles.color,
@@ -174,6 +410,14 @@ export const NfcShowcase = () => {
                   : "inset 0 0 0 1.5px rgba(255,255,255,0.15), inset 0 2px 4px rgba(255,255,255,0.1), 0 25px 50px rgba(0,0,0,0.45)"
               }}
             >
+              {/* Custom uploaded background image artwork */}
+              {selectedMat.id === "custom" && uploadedImage && (
+                <div
+                  className="absolute inset-0 bg-cover bg-center pointer-events-none rounded-[28px] opacity-75 mix-blend-normal"
+                  style={{ backgroundImage: `url(${uploadedImage})` }}
+                />
+              )}
+
               {/* Brushed metal micro-lines texture overlay */}
               <div
                 className={`absolute inset-0 bg-[repeating-linear-gradient(90deg,rgba(255,255,255,0.065)_0px,rgba(255,255,255,0.065)_1px,transparent_1px,transparent_4px)] ${matStyles.brushedOpacity} pointer-events-none rounded-[28px]`}
@@ -231,7 +475,7 @@ export const NfcShowcase = () => {
 
                 <div className="flex items-center gap-1.5 bg-black/10 dark:bg-white/15 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-wider shadow-inner shrink-0">
                   <Radio className="h-3 w-3 animate-pulse" />
-                  <span className="tracking-widest">TAP FOR BEAM</span>
+                  <span className="tracking-widest">TAP FOR SIGNAL</span>
                 </div>
               </div>
             </div>
@@ -323,8 +567,8 @@ export const NfcShowcase = () => {
                   <ChevronDown className={`w-3.5 h-3.5 text-[var(--text-tertiary)] transition-transform duration-300 ${showCustomPanel ? "rotate-180" : ""}`} />
                 </button>
 
-                <div className={`overflow-hidden transition-all duration-500 ease-out ${showCustomPanel ? "max-h-[500px] opacity-100 mt-3" : "max-h-0 opacity-0"}`}>
-                  <div className="p-4 rounded-2xl border border-[var(--border-primary)] bg-[var(--bg-primary)] space-y-5">
+                <div className={`overflow-hidden transition-all duration-500 ease-out ${showCustomPanel ? "max-h-[350px] opacity-100 mt-3" : "max-h-0 opacity-0"}`}>
+                  <div className="p-4 rounded-2xl border border-[var(--border-primary)] bg-[var(--bg-primary)] space-y-5 max-h-[330px] overflow-y-auto pr-1.5">
 
                     {/* Color Pickers Row */}
                     <div className="grid grid-cols-2 gap-4">
@@ -376,8 +620,8 @@ export const NfcShowcase = () => {
                             key={dir.value}
                             onClick={() => setGradientDir(dir.value)}
                             className={`flex items-center justify-center gap-1 py-2 rounded-xl border text-xs font-bold transition-all ${gradientDir === dir.value
-                                ? "border-[var(--accent-base)] bg-[var(--accent-glow)] text-[var(--accent-base)]"
-                                : "border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--text-secondary)]"
+                              ? "border-[var(--accent-base)] bg-[var(--accent-glow)] text-[var(--accent-base)]"
+                              : "border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--text-secondary)]"
                               }`}
                           >
                             <span className="text-sm">{dir.label}</span>
@@ -399,8 +643,8 @@ export const NfcShowcase = () => {
                             key={f.value}
                             onClick={() => setFinishType(f.value)}
                             className={`py-2 rounded-xl border text-[10px] font-bold uppercase tracking-wider transition-all ${finishType === f.value
-                                ? "border-[var(--accent-base)] bg-[var(--accent-glow)] text-[var(--accent-base)]"
-                                : "border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--text-secondary)]"
+                              ? "border-[var(--accent-base)] bg-[var(--accent-glow)] text-[var(--accent-base)]"
+                              : "border-[var(--border-primary)] text-[var(--text-tertiary)] hover:border-[var(--text-secondary)]"
                               }`}
                           >
                             {f.label}
@@ -432,6 +676,37 @@ export const NfcShowcase = () => {
                             <span className="text-[9px] font-bold text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors">{preset.name}</span>
                           </button>
                         ))}
+                      </div>
+                    </div>
+
+                    {/* Custom Artwork Image Uploader */}
+                    <div className="flex flex-col gap-2 border-t border-[var(--border-primary)] pt-4">
+                      <span className="text-[9px] uppercase tracking-wider text-[var(--text-tertiary)] font-bold">Custom Card Artwork</span>
+                      <div className="flex items-center gap-4">
+                        <label className="flex flex-col items-center justify-center gap-1.5 px-4 py-3.5 rounded-xl border border-dashed border-[var(--border-primary)] hover:border-[var(--accent-base)]/50 bg-[var(--surface-glass)] hover:bg-[var(--accent-glow)] transition-all cursor-pointer grow group text-center">
+                          <Upload className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--accent-base)] transition-colors" />
+                          <span className="text-[10px] font-bold text-[var(--text-secondary)] group-hover:text-[var(--accent-base)] transition-colors">Upload Artwork</span>
+                          <span className="text-[8px] text-[var(--text-tertiary)]">PNG, JPG, SVG (Max 3MB)</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                          />
+                        </label>
+
+                        {uploadedImage && (
+                          <div className="relative shrink-0 w-[72px] h-[48px] rounded-lg border border-[var(--border-primary)] overflow-hidden bg-cover bg-center group" style={{ backgroundImage: `url(${uploadedImage})` }}>
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <button
+                                onClick={handleRemoveImage}
+                                className="p-1 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -477,9 +752,14 @@ export const NfcShowcase = () => {
 
           <Button
             size="lg"
-            className="rounded-full px-8 py-4 text-xs font-bold uppercase tracking-widest bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 w-full sm:w-auto mt-4"
+            onClick={handleDownload}
+            disabled={isGenerating}
+            className={`rounded-full px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all w-full sm:w-auto mt-4 ${isGenerating
+              ? "bg-[var(--accent-glow)] border border-[var(--accent-base)]/40 text-[var(--accent-base)] animate-pulse"
+              : "bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90 cursor-pointer"
+              }`}
           >
-            Get Your NFC Card
+            {isGenerating ? generationStep : "Get Your NFC Card"}
           </Button>
         </div>
 
