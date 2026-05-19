@@ -12,7 +12,7 @@ export const Works = () => {
         
         {/* Centered Minimalist Section Header */}
         <div className="flex flex-col items-center text-center gap-2 max-w-2xl mx-auto">
-          <Typography variant="label">Commission Archive</Typography>
+          <Typography variant="label">Commission Showcase</Typography>
           <Typography variant="headline" as="h2" className="!leading-[1.2] text-3xl md:text-5xl font-bold tracking-tight">
             {workContent.title}
           </Typography>

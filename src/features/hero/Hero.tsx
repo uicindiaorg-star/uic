@@ -69,9 +69,9 @@ export const Hero = () => {
           ))}
         </div>
 
-        {/* Layer 03 — Chromatic Energy (diffused lower-right orange glow) */}
+        {/* Layer 03 — Chromatic Energy (diffused lower-right accent glow) */}
         <div 
-          className="absolute bottom-[-15%] right-[-15%] w-[70%] h-[70%] rounded-full bg-[#F26522] blur-[160px] opacity-[0.065] pointer-events-none z-10 animate-[orange-breathing_20s_infinite_ease-in-out]"
+          className="absolute bottom-[-15%] right-[-15%] w-[70%] h-[70%] rounded-full bg-[var(--accent-base)] blur-[160px] opacity-[0.065] pointer-events-none z-10 animate-[accent-breathing_20s_infinite_ease-in-out]"
         />
 
         {/* Layer 04 — Microscopic Cinematic Film Grain */}
@@ -100,7 +100,7 @@ export const Hero = () => {
             transform: translate(-20px, 25px) scale(0.95) rotate(-90deg);
           }
         }
-        @keyframes orange-breathing {
+        @keyframes accent-breathing {
           0%, 100% {
             transform: translate(0px, 0px) scale(1);
             opacity: 0.05;

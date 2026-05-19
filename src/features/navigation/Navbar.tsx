@@ -53,6 +53,47 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
     }
   }
 
+  // Compute inverted capsule theme styles:
+  // - Light web theme -> Dark navbar capsule (high contrast black float over ivory bg)
+  // - Dark web theme -> Light navbar capsule (glowing white card float over obsidian bg)
+  const isNavbarDark = theme === "light"
+
+  const capsuleBg = isNavbarDark 
+    ? "bg-neutral-950/95 border-neutral-800/80 shadow-[0_16px_40px_rgba(0,0,0,0.18)]" 
+    : "bg-white/95 border-neutral-100/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)]"
+
+  const logoBg = isNavbarDark ? "bg-white" : "bg-neutral-900"
+  const logoText = isNavbarDark ? "text-neutral-950" : "text-white"
+  const studioText = isNavbarDark ? "text-white" : "text-neutral-950"
+
+  const toggleBtnBg = isNavbarDark 
+    ? "bg-neutral-900/50 border-neutral-800 hover:border-neutral-700 text-white" 
+    : "bg-neutral-50/50 border-neutral-100 hover:border-neutral-300 text-neutral-700"
+
+  const ctaBtnClasses = isNavbarDark 
+    ? "bg-white hover:bg-neutral-200 text-black" 
+    : "bg-neutral-950 hover:bg-neutral-800 text-white"
+
+  const hamburgerBorder = isNavbarDark ? "border-neutral-800 bg-neutral-900" : "border-neutral-100 bg-neutral-50"
+  const hamburgerLines = isNavbarDark ? "bg-white" : "bg-neutral-900"
+
+  const getNavLinkClass = (href: string) => {
+    const isActive = activeSection === href
+    if (isNavbarDark) {
+      return isActive 
+        ? "text-white bg-white/10" 
+        : "text-white/60 hover:text-white hover:bg-white/5"
+    } else {
+      return isActive 
+        ? "text-neutral-950 bg-neutral-100" 
+        : "text-neutral-500 hover:text-neutral-950 hover:bg-neutral-50/50"
+    }
+  }
+
+  const getNavLinkTextClass = () => {
+    return isNavbarDark ? "text-white" : "text-neutral-950"
+  }
+
   return (
     <>
       <header
@@ -60,19 +101,19 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
           } ${!isMobileMenuOpen && !isVisible ? "-translate-y-24 opacity-0" : "translate-y-0 opacity-100"
           }`}
       >
-        {/* Floating Capsule design */}
+        {/* Floating Inverted Capsule design */}
         <div
-          className={`mx-auto max-w-[1150px] rounded-full px-4 md:px-8 py-2 md:py-3 flex justify-between items-center transition-all duration-300 pointer-events-auto border bg-white/95 text-neutral-900 border-neutral-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.03)]`}
+          className={`mx-auto max-w-[1150px] rounded-full px-3.5 md:px-8 py-2 md:py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto border ${capsuleBg} backdrop-blur-md`}
         >
-          {/* Logo brand - Circular dark logo with UIC initials */}
+          {/* Logo brand - Circular dark/light logo with UIC initials */}
           <button
             onClick={() => handleLinkClick("#hero")}
-            className="flex items-center gap-2.5 focus:outline-none group"
+            className="flex items-center gap-2 md:gap-2.5 focus:outline-none group"
           >
-            <div className="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-              <span className="text-[10px] font-black text-white tracking-widest font-mono pl-[1px]">UIC</span>
+            <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full ${logoBg} flex items-center justify-center transition-transform duration-300 group-hover:scale-105`}>
+              <span className={`text-[8.5px] md:text-[10px] font-black ${logoText} tracking-widest font-mono pl-[1px]`}>UIC</span>
             </div>
-            <span className="hidden sm:inline text-xs font-black tracking-widest text-neutral-950 uppercase">
+            <span className={`hidden xs:inline text-[10px] md:text-xs font-black tracking-widest ${studioText} uppercase`}>
               STUDIO
             </span>
           </button>
@@ -83,16 +124,13 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
               <button
                 key={link.href}
                 onClick={() => handleLinkClick(link.href)}
-                className={`relative text-[11px] font-extrabold uppercase tracking-widest transition-colors focus:outline-none py-1.5 px-3.5 group rounded-full ${activeSection === link.href
-                    ? "text-neutral-950 bg-neutral-50"
-                    : "text-neutral-500 hover:text-neutral-950 hover:bg-neutral-50/50"
-                  }`}
+                className={`relative text-[11px] font-extrabold uppercase tracking-widest transition-all focus:outline-none py-1.5 px-3.5 group rounded-full ${getNavLinkClass(link.href)}`}
               >
                 <span className="block relative overflow-hidden h-4">
                   <span className="block transition-transform duration-500 group-hover:-translate-y-full">
                     {link.label}
                   </span>
-                  <span className="absolute top-full left-0 block transition-transform duration-500 group-hover:-translate-y-full font-bold text-neutral-950">
+                  <span className={`absolute top-full left-0 block transition-transform duration-500 group-hover:-translate-y-full font-bold ${getNavLinkTextClass()}`}>
                     {link.label}
                   </span>
                 </span>
@@ -101,51 +139,43 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
           </nav>
 
           {/* Nav CTAs - Right: Location Indicator + Premium CTA button with rotating arrow */}
-          <div className="flex items-center gap-3">
-
-            {/* Small live location indicator
-            <div className="hidden lg:flex items-center gap-2 bg-neutral-50 border border-neutral-100 rounded-full px-3 py-1.5 shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] font-black tracking-widest text-neutral-500 uppercase">
-                MUMBAI, IN
-              </span>
-            </div> */}
+          <div className="flex items-center gap-1.5 md:gap-3">
 
             {/* Premium Theme Toggle Button */}
             <button
               onClick={onToggleTheme}
-              className="p-2 rounded-full border border-neutral-100 hover:border-neutral-300 text-neutral-700 transition-all bg-neutral-50 focus:outline-none flex items-center justify-center"
+              className={`hidden md:flex p-1.5 md:p-2 rounded-full border transition-all focus:outline-none items-center justify-center ${toggleBtnBg}`}
               aria-label="Toggle theme"
             >
               {theme === "dark" ? (
-                <Sun className="h-4 w-4 text-[var(--accent-base)] animate-in spin-in-12 duration-500" />
+                <Sun className="h-3.5 w-3.5 md:h-4 md:w-4 text-[var(--accent-base)] animate-in spin-in-12 duration-500" />
               ) : (
-                <Moon className="h-4 w-4 text-neutral-500 animate-in spin-in-12 duration-500" />
+                <Moon className="h-3.5 w-3.5 md:h-4 md:w-4 text-neutral-500 animate-in spin-in-12 duration-500" />
               )}
             </button>
 
             {/* Premium CTA Button */}
             <Button
               size="sm"
-              className="hidden sm:inline-flex rounded-full px-5 py-2.5 text-[10px] font-extrabold uppercase tracking-widest bg-neutral-900 hover:bg-[var(--accent-base)] text-white border-0 transition-all duration-300 group focus:outline-none flex items-center gap-1.5"
+              className={`hidden md:inline-flex rounded-full px-3 py-1.5 md:px-5 md:py-2.5 text-[8.5px] md:text-[10px] font-extrabold uppercase tracking-widest border-0 transition-all duration-300 group focus:outline-none items-center gap-1 md:gap-1.5 ${ctaBtnClasses}`}
               onClick={() => handleLinkClick("#contact")}
             >
               <span>Start Project</span>
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-45 text-white" />
+              <ArrowUpRight className="h-3 w-3 md:h-3.5 md:w-3.5 transition-transform duration-300 group-hover:rotate-45" />
             </Button>
 
             {/* Animated Hamburger Button — mobile only */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden w-9 h-9 flex flex-col justify-center items-center gap-[5px] p-1.5 rounded-full border border-neutral-100 bg-neutral-50 hover:border-neutral-300 transition-all focus:outline-none"
+              className={`md:hidden w-8 h-8 md:w-9 md:h-9 flex flex-col justify-center items-center gap-[4.5px] p-1.5 rounded-full border transition-all focus:outline-none ${hamburgerBorder}`}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
             >
-              <span className={`block h-[1.5px] bg-neutral-900 transition-all duration-300 origin-center ${isMobileMenuOpen ? "w-4 rotate-45 translate-y-[6.5px]" : "w-4"
+              <span className={`block h-[1.2px] md:h-[1.5px] ${hamburgerLines} transition-all duration-300 origin-center ${isMobileMenuOpen ? "w-3.5 rotate-45 translate-y-[5.5px]" : "w-3.5"
                 }`} />
-              <span className={`block h-[1.5px] bg-neutral-900 transition-all duration-200 ${isMobileMenuOpen ? "w-0 opacity-0" : "w-3 opacity-100"
+              <span className={`block h-[1.2px] md:h-[1.5px] ${hamburgerLines} transition-all duration-200 ${isMobileMenuOpen ? "w-0 opacity-0" : "w-2.5 opacity-100"
                 }`} />
-              <span className={`block h-[1.5px] bg-neutral-900 transition-all duration-300 origin-center ${isMobileMenuOpen ? "w-4 -rotate-45 -translate-y-[6.5px]" : "w-4"
+              <span className={`block h-[1.2px] md:h-[1.5px] ${hamburgerLines} transition-all duration-300 origin-center ${isMobileMenuOpen ? "w-3.5 -rotate-45 -translate-y-[5.5px]" : "w-3.5"
                 }`} />
             </button>
           </div>
