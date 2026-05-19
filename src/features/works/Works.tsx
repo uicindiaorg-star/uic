@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react"
-import { Typography, Section, Container } from "@/components/ui"
-import { Button } from "@/components/ui/button"
+import { Section } from "@/components/ui"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
-import { animate, set } from "animejs"
+import { animate } from "animejs"
 
 const archiveData = [
   { title: "Premium NFC Identity", category: "NFC Business Card", image: "/images/nfccard.webp" },
