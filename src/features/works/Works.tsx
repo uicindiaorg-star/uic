@@ -5,12 +5,12 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { animate, set } from "animejs"
 
 const archiveData = [
-  { title: "Premium NFC Identity", category: "NFC Business Card" },
-  { title: "Brand Identity System", category: "Identity + Visual Design" },
-  { title: "Digital Presence Launch", category: "Website + Portfolio" },
-  { title: "Creator Profile Experience", category: "Personal Branding" },
-  { title: "Business Identity Package", category: "Brand + NFC Experience" },
-  { title: "Luxury Portfolio System", category: "Creative Showcase" }
+  { title: "Premium NFC Identity", category: "NFC Business Card", image: "/images/nfccard.webp" },
+  { title: "Brand Identity System", category: "Identity + Visual Design", image: "/images/Brand Identity System.webp" },
+  { title: "Digital Presence Launch", category: "Website + Portfolio", image: "/images/digital-launch2.webp" },
+  { title: "Creator Profile Experience", category: "Personal Branding", image: "/images/Creator Profile Experience.webp" },
+  { title: "Business Identity Package", category: "Brand + NFC Experience", image: "/images/Business Identity Package.webp" },
+  { title: "Luxury Portfolio System", category: "Creative Showcase", image: "/images/Luxury Portfolio System.png" }
 ]
 
 export const Works = () => {
@@ -156,7 +156,11 @@ export const Works = () => {
                 >
                   {/* Top: Large Visual */}
                   <div className="w-full flex-grow overflow-hidden rounded-[20px] bg-[var(--bg-secondary)] relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-glow)] to-[var(--accent-glow-strong)] transition-transform duration-700 ease-[cubic-bezier(.25,.1,.25,1)] group-hover:scale-[1.03]" />
+                    <img 
+                      src={item.image} 
+                      alt={item.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(.25,.1,.25,1)] group-hover:scale-[1.03]"
+                    />
                   </div>
                   
                   {/* Bottom: Glass Metadata Block */}
