@@ -36,8 +36,17 @@ export const Works = () => {
 
     // AnimeJS Navigation Swap Animation
     if (trackRef.current) {
-      // Calculate offset based on card width + gap (620px + 32px)
-      const offset = nextIdx * (620 + 32)
+      const firstCard = trackRef.current.children[0] as HTMLElement
+      let offset = 0;
+      
+      if (firstCard) {
+        // Dynamically get actual rendered card width + responsive gap
+        const gap = parseInt(window.getComputedStyle(trackRef.current).gap || '32', 10)
+        offset = nextIdx * (firstCard.offsetWidth + gap)
+      } else {
+        // Fallback
+        offset = nextIdx * (620 + 32)
+      }
       
       animate(trackRef.current, {
         translateX: -offset,
@@ -77,7 +86,7 @@ export const Works = () => {
       <div className="relative z-10 flex flex-col lg:flex-row items-center h-full w-full">
         
         {/* FIXED LEFT INTRO PANEL */}
-        <div className="w-full lg:w-[45vw] h-full flex flex-col justify-center pl-6 lg:pl-[8vw] pr-6 lg:pr-16 relative z-20 pb-16 lg:pb-0">
+        <div className="w-full lg:w-[45vw] h-full flex flex-col justify-center pl-6 lg:pl-[8vw] pr-6 lg:pr-16 relative z-20 pb-16 pt-16 lg:pt-0 lg:pb-0">
           
           {/* Subtle gradient to fade cards passing behind text on desktop */}
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-primary)] to-transparent pointer-events-none hidden lg:block" />
@@ -124,10 +133,10 @@ export const Works = () => {
         </div>
 
         {/* SCROLLING / SWAPPING TRACK */}
-        <div className="w-full lg:w-[55vw] overflow-visible relative h-[78vh] min-h-[500px]">
+        <div className="w-full lg:w-[55vw] overflow-visible relative h-[55vh] lg:h-[78vh] min-h-[420px] lg:min-h-[500px]">
           <div 
             ref={trackRef}
-            className="absolute top-0 left-0 h-full flex flex-row items-center gap-[32px] will-change-transform pl-6 lg:pl-0 pr-[8vw]"
+            className="absolute top-0 left-0 h-full flex flex-row items-center gap-4 lg:gap-[32px] will-change-transform pl-6 lg:pl-0 pr-[8vw]"
           >
             {/* ARCHIVE CARDS */}
             {archiveData.map((item, idx) => {
