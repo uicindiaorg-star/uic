@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { testimonialsContent } from "@/content/testimonials"
 import { Typography, Section, Container, Card } from "@/components/ui"
 import { animate } from "animejs"
@@ -12,27 +12,43 @@ export const Testimonials = () => {
     const total = testimonialsContent.list.length
     const nextIdx = (activeIdx + 1) % total
 
-    // Smoothly animate the active sliding out and back in at the bottom of the stack using AnimeJS
+    // Smoothly animate the active card sliding out to the right
     if (cardsContainerRef.current) {
-      animate(cardsContainerRef.current.querySelector(".quote-card-active")!, {
-        translateX: [0, 160, 0],
-        rotate: [0, 8, 0],
-        opacity: [1, 0, 1],
-        scale: [1, 0.9, 1],
-        duration: 800,
-        easing: "easeOutExpo",
-        changeComplete: () => {
-          setActiveIdx(nextIdx)
-        }
-      })
+      const activeCard = cardsContainerRef.current.querySelector(".quote-card-active") as HTMLElement
+      if (activeCard) {
+        animate(activeCard, {
+          translateX: [0, 200],
+          rotate: [0, 15],
+          opacity: [1, 0],
+          duration: 400,
+          easing: "easeInQuad",
+          changeComplete: () => {
+            // Clear AnimeJS inline styles so React's stack styles take over cleanly
+            activeCard.style.transform = ''
+            activeCard.style.opacity = ''
+            setActiveIdx(nextIdx)
+          }
+        })
+      } else {
+        setActiveIdx(nextIdx)
+      }
     } else {
       setActiveIdx(nextIdx)
     }
   }
 
+  // Auto-play Animation for Testimonials
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext()
+    }, 4500) // 4.5 seconds
+
+    return () => clearInterval(timer)
+  }, [activeIdx])
+
   return (
-    <Section id="testimonials" className="relative bg-[var(--bg-secondary)] border-y border-[var(--border-primary)]">
-      <Container className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <Section id="testimonials" className="section-wrapper opacity-0 relative bg-[var(--bg-secondary)] border-y border-[var(--border-primary)] py-20 lg:py-32">
+      <Container className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         
         {/* Left Column: Trust Metrics & Section Headers */}
         <div className="lg:col-span-5 flex flex-col items-start gap-6 text-left">
@@ -60,10 +76,10 @@ export const Testimonials = () => {
         </div>
 
         {/* Right Column: Premium Stacked Quotes Slider */}
-        <div className="lg:col-span-7 flex flex-col items-center gap-6">
+        <div className="lg:col-span-7 flex flex-col items-center gap-6 w-full overflow-hidden px-4 lg:px-0">
           <div 
             ref={cardsContainerRef} 
-            className="relative w-full max-w-[500px] h-[340px] flex items-center justify-center"
+            className="relative w-full max-w-[500px] h-[380px] md:h-[340px] flex items-center justify-center mt-8 lg:mt-0"
           >
             {testimonialsContent.list.map((item, idx) => {
               // Stack offset calculations
@@ -106,7 +122,7 @@ export const Testimonials = () => {
                     pointerEvents: isCurrent ? "auto" : "none"
                   }}
                 >
-                  <Card className="w-full h-full flex flex-col justify-between p-8 bg-[var(--bg-primary)] border border-[var(--border-primary)] shadow-premium rounded-[28px] relative overflow-hidden">
+                  <Card className="w-full h-full flex flex-col justify-between p-6 md:p-8 bg-[var(--bg-primary)] border border-[var(--border-primary)] shadow-premium rounded-[24px] md:rounded-[28px] relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-24 h-24 rounded-full bg-radial from-[rgba(170,59,255,0.015)] to-transparent pointer-events-none" />
                     
                     {/* Testimonial Quote details */}
