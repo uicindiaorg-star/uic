@@ -492,9 +492,46 @@ export const Hero = () => {
 
               </div>
 
+              {/* Backside ambient glow to blend the photo card with the dark obsidian viewport */}
+              <div
+                className="absolute bottom-[-50px] left-[-100px] w-[240px] h-[160px] rounded-full bg-radial from-[var(--accent-base)]/25 via-transparent to-transparent pointer-events-none blur-[40px] z-20"
+                style={{
+                  transform: `translate3d(0, ${-scrollY * 0.14}px, 10px)`
+                }}
+              />
+
+              {/* LAYER 04: FLOATING PREMIUM PHYSICAL PHOTO CARD (Bottom-Left, Angled Parallax) */}
+              <div
+                className="hero-mockup-stagger opacity-0 absolute bottom-[-40px] left-[-90px] w-[185px] aspect-[1.58/1] rounded-[22px] overflow-hidden border border-white/[0.12] dark:border-white/[0.06] shadow-[0_24px_50px_rgba(0,0,0,0.6)] z-25 group"
+                style={{
+                  transform: `translate3d(0, ${-scrollY * 0.14}px, 50px) rotateX(${rotateX * 1.1}deg) rotateY(${rotateY * 1.1}deg) rotate(-15deg)`,
+                  transformStyle: "preserve-3d"
+                }}
+              >
+                {/* Soft glow mesh inside the card boundaries to blend background */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[var(--accent-base)]/20 via-transparent to-transparent z-10 pointer-events-none" />
+
+                {/* The premium generated image asset */}
+                <img
+                  src="/nfc_luxury_card.png"
+                  alt="Premium physical NFC card asset"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
+                {/* Gloss Refraction light bar moving based on mouse coordinates */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.08] to-transparent pointer-events-none transition-transform duration-300 z-20"
+                  style={{
+                    transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px)`,
+                    mixBlendMode: "overlay"
+                  }}
+                />
+
+                {/* Deep glass refraction borders */}
+                <div className="absolute inset-0 border border-white/[0.08] rounded-[22px] pointer-events-none z-30" />
+              </div>
             </div>
           </div>
-
         </div>
       </Container>
     </Section>
