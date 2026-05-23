@@ -104,6 +104,64 @@
   transform: translateY(0);
 }
 
+/* ═══ 3D Perspective & Mockup Layouts ═══ */
+.perspective-container {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Phone Device Chassis */
+.phone-mockup-frame {
+  position: relative;
+  background: rgba(10, 10, 15, 0.7);
+  border: 4px solid #1a1a24;
+  outline: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 40px;
+  box-shadow: 
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    inset 0 2px 4px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+/* Code Editor syntax highlighting */
+.token-keyword { color: #d4b8ff; }
+.token-tag { color: #7b3ff2; }
+.token-attr { color: #b084ff; }
+.token-string { color: #8d57f2; }
+.token-plain { color: #ffffff; }
+
+/* Custom Pulse and Typing cursor */
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  color: var(--accent-secondary);
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* NFC Pulsing Signal Ring */
+.nfc-signal-ring {
+  position: absolute;
+  border: 1px solid var(--accent-base);
+  border-radius: 50%;
+  animation: nfc-wave 3s infinite ease-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes nfc-wave {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
 /* ═══ Reduced Motion ═══ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
