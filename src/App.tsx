@@ -43,7 +43,7 @@ function App() {
       const elements = document.querySelectorAll(".section-wrapper")
       elements.forEach((el) => {
         const rect = el.getBoundingClientRect()
-        const isVisible = rect.top <= window.innerHeight * 0.85
+        const isVisible = rect.top <= window.innerHeight * 0.98
         if (isVisible && !el.classList.contains("revealed")) {
           el.classList.add("revealed")
           

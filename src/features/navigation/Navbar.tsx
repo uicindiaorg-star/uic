@@ -3,6 +3,8 @@ import { Sun, Moon, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { navLinks } from "./nav.data"
 import { MobileMenu } from "./MobileMenu"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 interface NavbarProps {
   theme: "light" | "dark"
@@ -45,6 +47,40 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [prevScrollY])
+
+  // Morph navbar capsule dynamically on scroll using GSAP ScrollTrigger
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+
+    const mm = gsap.matchMedia()
+
+    mm.add("(min-width: 768px)", () => {
+      ScrollTrigger.create({
+        start: "top top",
+        end: "+=120",
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = self.progress
+          const capsule = document.querySelector(".navbar-capsule")
+          if (capsule) {
+            gsap.to(capsule, {
+              maxWidth: gsap.utils.interpolate(1150, 950, progress) + "px",
+              paddingLeft: gsap.utils.interpolate(32, 20, progress) + "px",
+              paddingRight: gsap.utils.interpolate(32, 20, progress) + "px",
+              paddingTop: gsap.utils.interpolate(12, 8, progress) + "px",
+              paddingBottom: gsap.utils.interpolate(12, 8, progress) + "px",
+              overwrite: "auto",
+              duration: 0.15,
+            })
+          }
+        }
+      })
+    })
+
+    return () => {
+      mm.revert()
+    }
+  }, [])
 
   const handleLinkClick = (href: string) => {
     const element = document.querySelector(href)
@@ -103,7 +139,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
       >
         {/* Floating Inverted Capsule design */}
         <div
-          className={`mx-auto max-w-[1150px] rounded-full px-3.5 md:px-8 py-2 md:py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto border ${capsuleBg} backdrop-blur-md`}
+          className={`navbar-capsule mx-auto max-w-[1150px] rounded-full px-3.5 md:px-8 py-2 md:py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto border ${capsuleBg} backdrop-blur-md`}
         >
           {/* Logo brand - Circular dark/light logo with UIC initials */}
           <button

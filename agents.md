@@ -33,6 +33,10 @@ The project successfully builds using TypeScript 6 and Vite 8 with all configura
      - `tw-animate-css` (Animations)
 3. **Shared Helper**
    - `tslib` (Explicitly installed to support Radix UI build bundling)
+4. **Sharp** (Image Processing & Compression Engine)
+   - DevDependency: `sharp` (Utilized for converting JPG frames to highly optimized sequential WebP frames)
+5. **GSAP** (GreenSock Animation Platform)
+   - Dependency: `gsap@^3.12.5` (Utilized for high-performance scroll sequence scrubbing, 3D spatial parallax fields, and layout morphing)
 
 ---
 
@@ -51,10 +55,17 @@ The project successfully builds using TypeScript 6 and Vite 8 with all configura
 - Constructed a sticky capsule navigation header that floats with back-blurs.
 - Automatically slides away on scroll-down and slides into view on scroll-up.
 
+### 4. **GSAP-Powered Scroll-Scrub Sequence & 3D Spatial Parallax System**
+- Created an offline image sequence pipeline that converts and packs assets into responsive WebP frames.
+- Built a high-DPI canvas overlay system that simulates `object-fit: cover` and adjusts automatically on viewport changes.
+- Integrated **GSAP & ScrollTrigger** to replace hand-rolled LERP math, introducing buttery smooth scroll scrubbing and automatic resize invalidation.
+- Orchestrated highly detailed spatial 3D parallax offsets (canvas container translates at 0.7x speed with depth zoom, typography fades at 1.0x, and mockups translate up to 1.5x with subtle Y/X 3D tilts).
+- Added a responsive GSAP morph trigger to `src/features/navigation/Navbar.tsx` that condenses max-width and tightens padding as users scroll down.
+
 ---
 
 ## 💻 Implemented Feature Components
-- `src/features/hero/Hero.tsx`: Asymmetrical 70/30 cinematic typography section, gradient mesh orbs, and layered composite mockups with mouse tilt.
+- `src/features/hero/Hero.tsx`: Cinematic editorial fullscreen Hero featuring an asynchronous preloaded WebP canvas image-sequence scrub. Driven by a GSAP ScrollTrigger timeline to orchestrate ultra-smooth, multi-speed 3D spatial parallax scrolls, alongside a gorgeous opening stagger transition that pivots widgets from initial 3D rotation angles.
 - `src/features/nfc/NfcShowcase.tsx`: Aerospace Titanium Customizer card with concentric NFC signal rings emitting on tap.
 - `src/features/testimonials/Testimonials.tsx`: Card Stack quotes slider sliding out dynamically using AnimeJS timelines.
 - `src/features/works/Works.tsx`: Alternating Apple-style case study panels with categorized filter chips.
