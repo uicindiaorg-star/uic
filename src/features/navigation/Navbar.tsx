@@ -98,8 +98,7 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
     ? "bg-neutral-950/95 border-neutral-800/80 shadow-[0_16px_40px_rgba(0,0,0,0.18)]" 
     : "bg-white/95 border-neutral-100/80 shadow-[0_12px_40px_rgba(0,0,0,0.03)]"
 
-  const logoBg = isNavbarDark ? "bg-white" : "bg-neutral-900"
-  const logoText = isNavbarDark ? "text-neutral-950" : "text-white"
+  const logoBg = isNavbarDark ? "bg-white" : "bg-neutral-950"
   const studioText = isNavbarDark ? "text-white" : "text-neutral-950"
 
   const toggleBtnBg = isNavbarDark 
@@ -141,13 +140,17 @@ export const Navbar = ({ theme, onToggleTheme }: NavbarProps) => {
         <div
           className={`navbar-capsule mx-auto max-w-[1150px] rounded-full px-3.5 md:px-8 py-2 md:py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto border ${capsuleBg} backdrop-blur-md`}
         >
-          {/* Logo brand - Circular dark/light logo with UIC initials */}
+          {/* Logo brand - Circular vector brand logo */}
           <button
             onClick={() => handleLinkClick("#hero")}
             className="flex items-center gap-2 md:gap-2.5 focus:outline-none group"
           >
-            <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full ${logoBg} flex items-center justify-center transition-transform duration-300 group-hover:scale-105`}>
-              <span className={`text-[8.5px] md:text-[10px] font-black ${logoText} tracking-widest font-mono pl-[1px]`}>UIC</span>
+            <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full ${logoBg} flex items-center justify-center p-1.5 transition-transform duration-300 group-hover:scale-105 shadow-inner border border-white/5`}>
+              <img
+                src="/logo.png"
+                alt="UIC Studio"
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className={`hidden xs:inline text-[10px] md:text-xs font-black tracking-widest ${studioText} uppercase`}>
               STUDIO
